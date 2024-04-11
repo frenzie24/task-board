@@ -113,15 +113,16 @@ function storeTask(task) {
 
 // Todo: create a function to handle deleting a task
 function handleDeleteTask(event) {
-    let card = this.getParentElement();
+    let card = this.parentElement;
     let tasks = getItem('tasks');
 
     tasks.forEach(task => {
-        if(task.id == card.attr("id")) {
+        if(task.id == card.id) {
             const index = tasks.indexOf(task);
             tasks = tasks.splice(index, 1);
         }
-    })
+    });
+    setItem('tasks', tasks);
     card.remove();
     debugger;
 }
