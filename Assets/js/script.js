@@ -81,10 +81,12 @@ function renderTaskList() {
         debugger;
     });
 
+
+    // think the issue with drop targets is its not large enough to target
     function handleDrop(ev, ui) {
         let dropped = ui.helper;
         let droppedOn = $(this);
-        $(dropped).detach().css({top: 0, left: 0}).appendTo(droppedOn);
+        $(dropped).detach().appendTo(droppedOn);
     }
     
     todo.droppable({
@@ -155,7 +157,7 @@ function handleDeleteTask(event) {
     tasks.forEach(task => {
         if(task.id == card.id) {
             const index = tasks.indexOf(task);
-            tasks = tasks.splice(index, 1);
+           tasks.splice(index, 1);
         }
     });
     setItem('tasks', tasks);
