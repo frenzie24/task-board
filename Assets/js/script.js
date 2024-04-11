@@ -18,7 +18,6 @@ function generateTaskId() {
 // Todo: create a function to create a task card
 function createTaskCard(task) {
     let cardData = {
-        name: "task-card",
         class: '',
         id: task.id,
         status: task.status,
@@ -28,7 +27,7 @@ function createTaskCard(task) {
     const now = dayjs(new Date);
     const deltaTime =dayjs(task.dueDate).diff(now, 'day');
     card.addClass(deltaTime > 3 ? "bg-success" : deltaTime < 3 && deltaTime > 0 ?  "bg-warning" : "bg-danger");
-    
+  card.addClass("task-card")
     //card.addClass(task.status == tStatus.todo ? "bg-success" : task.status == tStatus.prog ? "bg-yellow" : "bg-red");
     card.css('z-index', 1);
     // use the toolBox funtion generateSimpleTag to create child elements for the card
@@ -55,14 +54,16 @@ function renderTaskList() {
     const todo = $("#todo-cards");
     const inProgress = $("#in-progress-cards");
     const done = $("#done-cards");
-    todo.sortable();
-    inProgress.sortable();
+
+  
 
     tasks.forEach(task => {
         let card = createTaskCard(task);
-        card.draggable(
-            { containment: '#taskboard', snap: '#todo-cards', snapMode: "inner" }
-        );
+        card.draggable({
+            containment: '#taskboard',
+            revert: "invalid",
+            snapMode: "inner"
+        });
         switch (task.status) {
             case tStatus.todo:
                 todo.append(card);
@@ -78,6 +79,33 @@ function renderTaskList() {
                 break;
         }
         debugger;
+    });
+
+    function handleDrop(ev, ui) {
+        let dropped = ui.helper;
+        let droppedOn = $(this);
+        $(dropped).detach().css({top: 0, left: 0}).appendTo(droppedOn);
+    }
+    
+    todo.droppable({
+        accept: ".task-card",
+        drop: (ev, ui) =>{
+          handleDrop(ev, ui);
+        }
+    });
+    
+    inProgress.droppable({
+        accept: ".task-card",
+        drop: (ev, ui) =>{
+            handleDrop(ev, ui);
+        }
+    });
+    
+    done.droppable({
+        accept: ".task-card",
+        drop: (ev, ui) =>{
+            handleDrop(ev, ui);
+        }
     });
 }
 
