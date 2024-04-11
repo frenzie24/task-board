@@ -23,6 +23,7 @@ function createTaskCard(task) {
         id: task.id,
         status: task.status,
     }
+    // TODO: ADD STYLING TO CARD 
     let card = generateElement("div", cardData);
     // use the toolBox funtion generateSimpleTag to create child elements for the card
     // and store them in an array children
@@ -30,6 +31,7 @@ function createTaskCard(task) {
         generateSimpleTag("h2", task.title),
         generateSimpleTag('h4', dayjs(task.dueDate)),
         generateElement("p", { id: 'description' }).append(task.description),
+      generateElement("button", {class: "btn btn-danger"}).text('DELETE').on('click', handleDeleteTask),
     ];
     card.append(children);
     return card;
@@ -47,10 +49,12 @@ function renderTaskList() {
     const todo = $("#todo-cards");
     const inProgress = $("#in-progress-cards");
     const done = $("#done-cards");
-
+    todo.draggable();
+    inProgress.draggable();
 
     tasks.forEach(task => {
         let card = createTaskCard(task);
+        card.draggable();
         switch (task.status) {
             case tStatus.todo:
                 todo.append(card);
@@ -109,7 +113,17 @@ function storeTask(task) {
 
 // Todo: create a function to handle deleting a task
 function handleDeleteTask(event) {
+    let card = this.getParentElement();
+    let tasks = getItem('tasks');
 
+    tasks.forEach(task => {
+        if(task.id == card.attr("id")) {
+            const index = tasks.indexOf(task);
+            tasks = tasks.splice(index, 1);
+        }
+    })
+    card.remove();
+    debugger;
 }
 
 // Todo: create a function to handle dropping a task into a new status lane
