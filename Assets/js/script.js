@@ -43,7 +43,8 @@ function handleAddTask(event){
     if (task.title == '' || !task.title) {
         return;
     }
-    console.log(`new task: ${task}`);
+    console.log(`new task: `);
+    console.log(`${task}`);
     // use our toolBox function to store our task without thinknig about it
     storeTask(task);
     $('#taskModal').modal('hide');
