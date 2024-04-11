@@ -53,33 +53,19 @@ function renderTaskList() {
         let card = createTaskCard(task);
         switch (task.status) {
             case tStatus.todo:
-                $('#todo-cards').append(card);
+                todo.append(card);
+                break;
+            case tStatus.prog:
+                inProgress.append(card);
+                break;
+            case tStatus.done:
+                done.append(card);
                 break;
 
             default:
                 break;
         }
         debugger;
-        // let card = $('<div>', task).attr('class', 'd-flex bg-white h50 w50');
-
-       // card = `<div`
-        /*
-        let title = $('<div>').attr('class', 'd-flex bg-white');
-        let description = $('<div>').attr('class', 'd-flex bg-white');
-        let dueDate = $('<div>').attr('class', 'd-flex bg-white');
-        title.text(task.title);
-        description.text(task.description);
-        dueDate.text(task.dueDate);
-        card.append([title, description, dueDate]);
-        switch (task.status) {
-            case tStatus.todo:
-                $('#todo-cards').append(card);
-                break;
-
-            default:
-                break;
-        }
-        */
     });
 }
 
