@@ -25,11 +25,17 @@ function createTaskCard(task) {
     }
     // TODO: ADD STYLING TO CARD 
     let card = generateElement("div", cardData);
+    const now = dayjs(new Date);
+    const deltaTime =dayjs(task.dueDate).diff(now, 'day');
+    card.addClass(deltaTime > 3 ? "bg-success" : deltaTime < 3 && deltaTime > 0 ?  "bg-warning" : "bg-danger");
+    
+    //card.addClass(task.status == tStatus.todo ? "bg-success" : task.status == tStatus.prog ? "bg-yellow" : "bg-red");
+    card.css('z-index', 1);
     // use the toolBox funtion generateSimpleTag to create child elements for the card
     // and store them in an array children
     let children = [
         generateSimpleTag("h2", task.title),
-        generateSimpleTag('h4', dayjs(task.dueDate)),
+        generateSimpleTag('h4', new Date(task.dueDate).toLocaleDateString()),
         generateElement("p", { id: 'description' }).append(task.description),
       generateElement("button", {class: "btn btn-danger"}).text('DELETE').on('click', handleDeleteTask),
     ];
@@ -49,12 +55,14 @@ function renderTaskList() {
     const todo = $("#todo-cards");
     const inProgress = $("#in-progress-cards");
     const done = $("#done-cards");
-    todo.draggable();
-    inProgress.draggable();
+    todo.sortable();
+    inProgress.sortable();
 
     tasks.forEach(task => {
         let card = createTaskCard(task);
-        card.draggable();
+        card.draggable(
+            { containment: '#taskboard', snap: '#todo-cards', snapMode: "inner" }
+        );
         switch (task.status) {
             case tStatus.todo:
                 todo.append(card);
