@@ -28,29 +28,37 @@
     <div class="modal" tabindex="-1" id="taskModal">
       <div class="modal-dialog">
         <div class="modal-content">
+          <!-- modal header-->
           <div class="modal-header">
-            <h5 class="modal-title">Modal title</h5>
+            <h5 class="modal-title">New Task</h5>
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
           </div>
+          <!-- modal body -->
           <div class="modal-body" title="Add a Task">
             <form>
+              <!-- container for title and due date forms, displays them in a row-->
               <div class="container-md row">
+                <!-- container for task title due date -->
                 <div class="mb-3 col">
                   <label for="task-title" class="form-label">Task Title</label>
                   <input type="text" class="form-control" id="task-title" aria-describedby="task-help">
                   <div id="task-help" class="form-text">What is your task named?</div>
                 </div>
                 <div class="mb-3 col">
+                  <!-- container for task title input -->
                   <label for="task-due-date" class="form-label">Due Date:</label>
                   <input type="date" class="form-control" id="task-due-date">
                 </div>
               </div>
-              <div class="mb-3 form-check">
+              
+                <!-- container for task description text area -->
+              <div class="mb-3">
                 <label class="form-label" for="task-decscription">Task Description</label>
                 <textarea class="form-control" id="task-decscription"></textarea>
               </div>
             </form>
           </div>
+          <!-- modal footer-->
           <div class="modal-footer justify-content-center">
 
             <button type="submit" class="btn btn-primary align-center" id="add-task-btn" aria-describedby="add-btn-help">Add
