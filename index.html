@@ -22,10 +22,53 @@
   </header>
   <div class="container">
     <div class="text-center mb-5">
-      <button class="btn btn-success" data-bs-toggle="modal" ="#formModal">Add Task</button>
+      <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#taskModal">Add Task</button>
     </div>
     <!-- Todo: Create a modal with a form to add tasks -->
-    <div class="row swim-lanes text-center justify-content-between">
+    <div class="modal" tabindex="-1" id="taskModal">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <!-- modal header-->
+          <div class="modal-header">
+            <h5 class="modal-title">New Task</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <!-- modal body -->
+          <div class="modal-body" title="Add a Task">
+            <form>
+              <!-- container for title and due date forms, displays them in a row-->
+              <div class="container-md row">
+                <!-- container for task title due date -->
+                <div class="mb-3 col">
+                  <label for="task-title" class="form-label">Task Title</label>
+                  <input type="text" class="form-control" id="task-title" aria-describedby="task-help">
+                  <div id="task-help" class="form-text">What is your task named?</div>
+                </div>
+                <div class="mb-3 col">
+                  <!-- container for task title input -->
+                  <label for="task-due-date" class="form-label">Due Date:</label>
+                  <input type="date" class="form-control" id="task-due-date">
+                </div>
+              </div>
+              
+                <!-- container for task description text area -->
+              <div class="mb-3">
+                <label class="form-label" for="task-decscription">Task Description</label>
+                <textarea class="form-control" id="task-decscription"></textarea>
+              </div>
+            </form>
+          </div>
+          <!-- modal footer-->
+          <div class="modal-footer justify-content-center">
+
+            <button type="submit" class="btn btn-primary align-center" id="add-task-btn" aria-describedby="add-btn-help">Add
+              Task</button>
+            <div id="add-btn-help" class="form-text">Title Required</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row swim-lanes text-center justify-content-between" id="taskboard">
       <div class="col-12 col-lg-4 d-flex">
         <div id="to-do" class="card border-light mb-3 lane flex-grow-1">
           <div class="card-header bg-white">
@@ -41,20 +84,20 @@
           <div class="card-header bg-white">
             <h2 class="card-title mb-1">In Progress</h2>
           </div>
-          <div class="card-body bg-light">
+          <div class="card-body bg-light d-flex-col">
             <div id="in-progress-cards"></div>
           </div>
         </div>
+      </div>
+      <div class="col-12 col-lg-4 d-flex">
+        <div id="done" class="card border-light mb-3 lane flex-grow-1">
+          <div class="card-header bg-white">
+            <h2 class="card-title mb-1">Done</h2>
+          </div>
+          <div class="card-body bg-light">
+            <div id="done-cards"></div>
+          </div>
         </div>
-        <div class="col-12 col-lg-4 d-flex">
-          <div id="done" class="card border-light mb-3 lane flex-grow-1">
-            <div class="card-header bg-white">
-              <h2 class="card-title mb-1">Done</h2>
-            </div>
-            <div class="card-body bg-light">
-              <div id="done-cards"></div>
-          </div>
-          </div>
       </div>
     </div>
   </div>
@@ -66,7 +109,7 @@
   <script src="https://code.jquery.com/ui/1.13.1/jquery-ui.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/dayjs@1.11.3/dayjs.min.js"
     integrity="sha256-iu/zLUB+QgISXBLCW/mcDi/rnf4m4uEDO0wauy76x7U=" crossorigin="anonymous"></script>
-
+  <script src="./assets/js/toolBox.js"></script>
   <script src="./assets/js/script.js"></script>
 </body>
 
