@@ -24,22 +24,25 @@ function createTaskCard(task) {
     }
     // TODO: ADD STYLING TO CARD 
     let card = generateElement("div", cardData);
+    // using dayjs, we can get the difference in time from dueDate to now, delaTima is the differnce in days
     const now = dayjs(new Date);
     const dueDate = dayjs(task.dueDate);
-
     const deltaTime = dueDate.diff(now, 'day');
+    // inline conditional if deltaTime > 3 set the background to bg-success,
+    // else if deltaTime > 0 set background to bg-warning, 
+    // else set background to bg-danger
     card.addClass(deltaTime > 3 ? "bg-success" : deltaTime < 3 && deltaTime > 0 ? "bg-warning" : "bg-danger");
     card.addClass("task-card")
-    //card.addClass(task.status == tStatus.todo ? "bg-success" : task.status == tStatus.prog ? "bg-yellow" : "bg-red");
     card.css('z-index', 1);
-    // use the toolBox funtion generateSimpleTag to create child elements for the card
+    // use the toolBox functions to create child elements for the card
     // and store them in an array children
     let children = [
         generateSimpleTag("h2", task.title),
-        generateSimpleTag('h4', new Date(task.dueDate).toLocaleDateString()),
+        generateSimpleTag('h4', `Due: ${new Date(task.dueDate).toLocaleDateString()}`),
         generateElement("p", { id: 'description' }).append(task.description),
-        generateElement("button", { class: "btn btn-danger" }).text('DELETE').on('click', handleDeleteTask),
+        generateElement("button", { class: "btn btn-danger border border-dark" }).text('DELETE').on('click', handleDeleteTask),
     ];
+    // attach child elements stored in children to the card and return the card
     card.append(children);
     return card;
 }
@@ -53,9 +56,11 @@ function renderTaskList() {
     }
     // get the card sections we want to append to
     // task will be appeded to card section based on status
-    const todo = $("#todo-cards").css("min-height", "100%").empty().sortable();
+    // here we set the min height of the cards to hold tasks so that they can be useable droppable targets
+    // then we remove any childdren of our cards to prepare for new render
+    const todo = $("#todo-cards").css("min-height", "100%").empty().sortable().sortable();;
     const inProgress = $("#in-progress-cards").css("min-height", "100%").empty().sortable();
-    const done = $("#done-cards").css("min-height", "100%").empty().sortable();
+    const done = $("#done-cards").css("min-height", "100%").empty().sortable().sortable();;
 
     tasks.forEach(task => {
         let card = createTaskCard(task);
@@ -65,6 +70,8 @@ function renderTaskList() {
             snap: true,
             snapMode: "inner"
         });
+
+        // this switch case handles which card task card will attach to
         switch (task.status) {
             case tStatus.todo:
                 todo.append(card);
@@ -79,12 +86,9 @@ function renderTaskList() {
             default:
                 break;
         }
-        debugger;
     });
-    const droper = $('#droppable');
 
-    // think the issue with drop targets is its not large enough to target
-    //  handleDrop(ev, ui);
+   // handles dropped a draggble onto our droppables, then calls handleDrop to reassign task status and store updated task
     todo.droppable({
         drop: function (ev, ui) {
             handleDrop(ev, ui);
@@ -137,7 +141,7 @@ function handleAddTask(event) {
 
 }
 
-
+// Function to store tasks
 function storeTask(task) {
     // use toolBox function getItem to get our tasks wihtout worrying about parsing the data
     let tasks = getItem('tasks');
@@ -154,22 +158,25 @@ function storeTask(task) {
 function handleDeleteTask(event) {
     let card = this.parentElement;
     let tasks = getItem('tasks');
-
+    // steps through the array and remove the task
     tasks.forEach(task => {
         if (task.id == card.id) {
             const index = tasks.indexOf(task);
             tasks.splice(index, 1);
         }
     });
+    // store our updated tasks
     setItem('tasks', tasks);
+    // remove the task card from DOM
     card.remove();
-    debugger;
 }
 
 // Todo: create a function to handle dropping a task into a new status lane
 function handleDrop(event, ui) {
+    // dargged is the task that is being modified
         let dragged =   $(ui.draggable)[0];
         let tasks = getItem('tasks');
+        //find all tasks that match id then set status to dropped card
         let task = tasks.find((entry) => entry.id === dragged.id);
         if (event.target.id == 'in-progress-cards') {
             dragged.setAttribute('status', tStatus.prog);
@@ -181,12 +188,11 @@ function handleDrop(event, ui) {
             dragged.setAttribute('status', tStatus.todo);
             task.status = tStatus.todo; 
         }
-        
+        // replace old task with new task
         tasks.splice(tasks.indexOf(task), 1, task)
+        // store updated tasks array
         setItem('tasks', tasks);
-      
-
-        
+         
 }
 
 // Todo: when the page loads, render the task list, add event listeners, make lanes droppable, and make the due date field a date picker
