@@ -60,9 +60,10 @@ function renderTaskList() {
     // task will be appeded to card section based on status
     // here we set the min height of the cards to hold tasks so that they can be useable droppable targets
     // then we remove any childdren of our cards to prepare for new render
-    const todo = $("#todo-cards").css("min-height", "170px").empty().sortable().sortable();;
-    const inProgress = $("#in-progress-cards").css("min-height", "170px").empty().sortable();
-    const done = $("#done-cards").css("min-height", "170px").empty().sortable().sortable();;
+    const style = {"min-height":"170px", "height": "100%"};
+    const todo = $("#todo-cards").css(style).empty().sortable().sortable();;
+    const inProgress = $("#in-progress-cards").css(style).empty().sortable();
+    const done = $("#done-cards").css(style).empty().sortable().sortable();;
 
     tasks.forEach(task => {
         let card = createTaskCard(task);
