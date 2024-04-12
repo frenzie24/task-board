@@ -27,6 +27,7 @@ function createTaskCard(task) {
     // using dayjs, we can get the difference in time from dueDate to now, delaTima is the differnce in days
     const now = dayjs(new Date);
     const dueDate = dayjs(task.dueDate);
+    
     const deltaTime = dueDate.diff(now, 'day');
     // inline conditional if deltaTime > 3 set the background to bg-success,
     // else if deltaTime > 0 set background to bg-warning, 
@@ -123,7 +124,7 @@ function handleAddTask(event) {
     let task = {
         // title, dueDate, and description all get their values from user input
         title: $("#task-title").val(),
-        dueDate: new Date($("#task-due-date").val()),
+        dueDate: new Date(new Date($("#task-due-date").val()).getTime() + (24 * 60 *60* 1000)),
         description: $("#task-decscription").val(),
         // id is generated with by calling generateTaskId
         id: generateTaskId(),
