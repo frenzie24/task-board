@@ -44,6 +44,7 @@ function createTaskCard(task) {
     ];
     // attach child elements stored in children to the card and return the card
     card.append(children);
+    card.css('margin-bottom:', '1em');
     return card;
 }
 
